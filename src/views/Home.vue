@@ -1,20 +1,12 @@
 <template>
   <div class="home">
-    <div class="feature-card">
-      <router-link to="/movie/tt0409591">
-        <img src="../assets/images/cover.jpg" 
-        alt="james bond" class="featured-img">
-        <div class="detail">
-          <h3>Invasion</h3>
-          <p>
-          Trois ans après le crash du vaisseaux alien à Moscou, Yulya a développé d'étranges pouvoirs et devient un cobaye pour le Ministère de la Défense. Enfermée dans un laboratoire secret, les scientifiques et les militaires décortiquent ses sentiments. 
-          </p>
-        </div>
-      </router-link>
+    <div ref="header">
+    <Search :setMovies="setMovies" />
     </div>
-    <Search :setMovies="setMovies"/>
-    <div class="movies-list">  
-      <MovieItem  v-for="movie in movies" :key="movie.imdbID" :movie="movie" />
+    
+    <MovieSlide />
+    <div class="movies-list" ref="moviesBloc">  
+      <MovieItem  v-for="movie in movies" :key="movie.id" :movie="movie" />
     </div>
   </div>
 </template>
@@ -23,21 +15,39 @@
 import {ref} from 'vue';
 import MovieItem from '../components/MovieItem.vue';
 import Search from '../components/Search.vue';
+import MovieSlide from '../components/MovieSlide.vue';
 export default {
-  components: { MovieItem,Search },
+  components: { MovieItem,Search,MovieSlide},
   setup(){
     const movies= ref([]);
-
+    const header=ref(null);
+    const moviesBloc = ref(null);
     const setMovies=(data)=>{
-    movies.value=data;
+      movies.value=data;
     }
 
+    const stickHeader=()=>{
+      if(header.value){
+        const sticky = header.value.offsetTop;
+        if (window.pageYOffset > sticky) {
+          header.value.classList.add("sticky");
+        } else {
+          header.value.classList.remove("sticky");
+        }
+      }
+   
+    }
+     window.onscroll = function() {stickHeader()};
     return {
       setMovies,
+      moviesBloc,
+      header,
       movies
     }
-  }
+  },
+
 }
+
 </script>
 <style lang="scss">
   .home{
@@ -53,9 +63,8 @@ export default {
       }
       .detail{
         position: absolute;
-        left:0;
-        right:0;
         bottom: 0;
+        width: 100%;
         background-color: rgba(0,0,0,0.6) ;
         padding:16px;
         z-index:1;
@@ -74,5 +83,15 @@ export default {
       flex-wrap: wrap;
       margin: 0px 8px;
     }
+    .sticky {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #35495e;
+      width: 100%;
+      z-index: 1;
+    }
+
   }
+
 </style>

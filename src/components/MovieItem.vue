@@ -1,13 +1,13 @@
 <template>
    <div class="movie">
-        <router-link :to="'/movie/'+movie.imdbID" class="movie-link">
+        <router-link :to="details[4]==='serie'?'/detail/'+details[4]+'/'+details[5]:'/movie/'+details[4]+'/'+details[5]" class="movie-link">
             <div class="product-image">
-            <img :src="movie.Poster" alt="Movie Poster">
-            <div class="type">{{movie.Type}}</div>
+            <img :src="'https://statics.ocs.fr'+movie.imageurl" alt="Movie Poster">
+            <div class="type">{{details[4]}}</div>
             </div>
             <div class="detail">
-                <p class="year">{{movie.Year}}</p>
-                <h3>{{movie.Title}}</h3>
+                <h3>{{movie.title[0].value}}</h3>
+                <p>{{movie.subtitle}}</p>
             </div>
         </router-link>
     </div>
@@ -15,7 +15,13 @@
 
 <script>
 export default {
-    props:["movie"]
+    props:["movie"],
+    data(props){
+      console.log(props.movie.detaillink);
+      return{
+        details:props.movie.detaillink.split("/")
+      }
+    }
 }
 </script>
 
@@ -58,7 +64,7 @@ export default {
             .type{
               position:absolute;
               padding: 8px 16px;
-              background-color:#42B883;
+              background-color:#ff9800;
               color:#FFF;
               bottom:16px;
               left:0px;
@@ -79,6 +85,9 @@ export default {
               color:#FFF;
               font-weight: 600;
               font-size:18px;
+            }
+            p{
+                  color: #ff9800;
             }
           }
       }

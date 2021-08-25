@@ -1,7 +1,7 @@
 <template>
   <header>
     <router-link to="/">
-      <h1><span>Vue</span>Movies</h1>
+      <h1><span>OCS</span>Movies</h1>
     </router-link>
   </header>
   <main>
@@ -16,10 +16,11 @@
 *{
   margin:0;
   padding:0;
+  scroll-behavior: smooth;
   box-sizing: border-box;
   font-family: 'Fira Sans',sans-serif;
   &::selection{
-    background: transparentize(#42B883, 0.5);
+    background: transparentize(#ff9800, 0.5);
   }
 }
 body{
@@ -39,7 +40,7 @@ header {
   color:#fff;
   font-size: 28px;
     span{
-      color:#42B883
+      color:#ff9800
     }
   }
 }

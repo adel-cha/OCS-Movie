@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="SearchMovies()" class="search-box">
-      <input type="text" placeholder="Quel film vous voulez regarder ?" v-model="search">
+      <input type="text" placeholder="Que voulez-vous regarder ?" v-model="search">
       <input type="submit" value="Rechercher">
     </form>
 </template>
@@ -8,18 +8,22 @@
 <script>
 import {ref} from 'vue';
 export default {
-    props:["setMovies"],
+    props:["setMovies","scrollTo"],
     setup(props){
-        console.log(props)
+    
         const search= ref("");
         const SearchMovies =()=>{
         if(search.value !=""){
-        fetch(`https://api.ocs.fr/apps/v2/contents?search=title%3DGame`)
+          fetch(`https://api.ocs.fr/apps/v2/contents?search=title=${search.value}`)
             .then(response =>response.json())
             .then(data=>{
-               props.setMovies(data.Search);
+               props.setMovies(data.contents);
                 search.value= "";
+                  setTimeout(()=>{
+                    window.scrollTo(50, 400);
+                },1000)
             })
+          
         }
         }
         return {
@@ -65,7 +69,7 @@ export default {
           flex: 1 1 20%;
           cursor: pointer;
           max-width:20%;
-          background-color:#42B883;
+          background-color:#ff9800;
           padding:16px;
           border-radius:8px;
           color:#FFF;
