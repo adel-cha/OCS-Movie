@@ -4,10 +4,10 @@
             <fa icon="arrow-circle-left" />
         </router-link>
         <div class="description-item" >
-            <h2 v-if="serie">{{serie.title[0].value}}</h2>
+            <h2 v-if="serie">{{serieTitle}}</h2>
         </div>
         <vue-collapsible-panel-group accordion v-if="serie">
-            <vue-collapsible-panel v-for="season in serie.seasons" :key="season.id" :expanded="false">
+            <vue-collapsible-panel class="collapsePanel" v-for="season in serie.seasons" :key="season.id" :expanded="false">
                 <template #title >
                     <div class="Title-box">
                         <div class="Title-img-box">
@@ -63,6 +63,7 @@ import {ref, onBeforeMount} from "vue" ;
 import {useRoute} from 'vue-router';
 import Modal from '../components/Modal.vue'
 import Rating from '../components/Rating.vue'
+import {getMovieDetails} from '@/api'
 import VideoPlayer from '@/components/VideoPlayer.vue';
 import '../style/collapsible.css'
 import {
@@ -92,18 +93,27 @@ export default {
       }
     },
     setup(){
-        const serie= ref(null);
+        const serie= ref({});
+        const serieTitle=ref(null);
         const route =useRoute();
-
-        onBeforeMount(()=>{
-            fetch(`https://api.ocs.fr/apps/v2/details/${route.params.type}/${route.params.id}`)
-            .then(response =>response.json())
-                .then(data=>{
+           onBeforeMount(async()=>{
+               try{
+                    const data = await getMovieDetails(route.params.type,route.params.id);
                     serie.value= data.contents;
-                });
+                    if(data.contents.title){
+                        serieTitle.value= data.contents.title[0].value
+                    }
+                   
+                  }catch(err){
+                    console.log(err);
+                    return false
+                }
+              
+               
         })
         return{
-            serie
+            serie,
+            serieTitle
         }
    }
 }

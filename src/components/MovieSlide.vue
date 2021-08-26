@@ -4,8 +4,7 @@
         <template v-slot:prevButton><fa icon="chevron-left" /></template>
         <template v-slot:nextButton><fa icon="chevron-right" /></template>
         <router-link  v-for="slide in slides" :key="slide.id" :to="'/movie/'+slide.id">
-            <img :src="getImgUrl(slide.image)" 
-            :alt="slide.title" class="featured-img">
+            <img :src="getImgUrl(slide.image)" :alt="slide.title" class="featured-img">
             <div class="detail">
             <h3>{{slide.title}}</h3>
             <p>

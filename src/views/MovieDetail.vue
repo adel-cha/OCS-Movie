@@ -4,13 +4,13 @@
             <fa icon="arrow-circle-left" />
         </router-link>
         <div class="description-item" >
-            <h2>{{movie.title[0].value}}</h2>
+            <h2 >{{movieTitle}}</h2>
            
         </div>
         <div class="player-item">
             <div v-show="!showPlayer" class="imagePlayer"  >
                 <img  :src="'https://statics.ocs.fr'+movie.fullscreenimageurl" alt="Movie Poster" width="800" >
-                <fa  icon="play-circle" @click="togglePlay" />
+                <fa class="playButton" icon="play-circle" @click="togglePlay" />
             </div>
             <VideoPlayer
                 v-if="showPlayer"
@@ -29,7 +29,7 @@
 import {ref, onBeforeMount} from "vue" ;
 import {useRoute} from 'vue-router';
 import VideoPlayer from '@/components/VideoPlayer.vue';
-
+import {getMovieDetails} from '@/api'
 export default {
     components: { VideoPlayer },
     data(){
@@ -47,58 +47,65 @@ export default {
             this.showPlayer=!this.showPlayer;
         }
     },
+  
     setup(){
-    const movie= ref({});
-    const route =useRoute();
-
-    onBeforeMount(()=>{
-        fetch(`https://api.ocs.fr/apps/v2/details/${route.params.type}/${route.params.id}`)
-        .then(response =>response.json())
-            .then(data=>{
+        const movie= ref({});
+        const movieTitle =ref(null)
+        const route =useRoute();
+        onBeforeMount(async()=>{
+             try{
+                const data = await getMovieDetails(route.params.type,route.params.id);
                 movie.value= data.contents;
-            });
-    })
-    return{
-        movie
-    }
+                if(data.contents.title){
+                    movieTitle.value= data.contents.title[0].value
+                }
+            }catch(err){
+                console.log(err);
+                return false
+            }
+        })
+        return{
+            movie,
+            movieTitle
+        }
     }
 }
 </script>
 
 <style lang="scss">
 
-.movie-detail{
-    padding:16px;
-    .back-link{
-        font-size: 25px;
-        color: #ff9800;
-        float: left;
-        margin-right: 5px;
-    }
-    .player-item{
+    .movie-detail{
         padding:16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        .back-link{
+            font-size: 25px;
+            color: #ff9800;
+            float: left;
+            margin-right: 5px;
+        }
+        .player-item{
+            padding:16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        h2{
+            color:#FFF;
+            font-size:28px;
+            font-weight:600;
+            margin-bottom: 16px;
+        }
+        .featured-img{
+            display:block;
+            max-width:100%;
+            margin-bottom:16px;
+        }
+        p{
+            color: #FFF;
+            font-size:18px;
+            line-height:1.4;
+        }
     }
-    h2{
-        color:#FFF;
-        font-size:28px;
-        font-weight:600;
-        margin-bottom: 16px;
-    }
-    .featured-img{
-        display:block;
-        max-width:100%;
-        margin-bottom:16px;
-    }
-    p{
-        color: #FFF;
-        font-size:18px;
-        line-height:1.4;
-    }
-}
-.imagePlayer{
+    .imagePlayer{
     svg{
         font-size: 100px;
         position: relative;

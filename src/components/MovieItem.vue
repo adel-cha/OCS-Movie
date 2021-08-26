@@ -1,6 +1,6 @@
 <template>
    <div class="movie">
-        <router-link :to="details[4]==='serie'?'/detail/'+details[4]+'/'+details[5]:'/movie/'+details[4]+'/'+details[5]" class="movie-link">
+        <router-link  :to="details[4]==='serie'?'/detail/'+details[4]+'/'+details[5]:'/movie/'+details[4]+'/'+details[5]" class="movie-link">
             <div class="product-image">
             <img :src="'https://statics.ocs.fr'+movie.imageurl" alt="Movie Poster">
             <div class="type">{{details[4]}}</div>
@@ -17,7 +17,6 @@
 export default {
     props:["movie"],
     data(props){
-      console.log(props.movie.detaillink);
       return{
         details:props.movie.detaillink.split("/")
       }

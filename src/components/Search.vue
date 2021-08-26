@@ -10,9 +10,8 @@ import {ref} from 'vue';
 export default {
     props:["setMovies","scrollTo"],
     setup(props){
-    
-        const search= ref("");
-        const SearchMovies =()=>{
+      const search= ref("");
+      const SearchMovies =()=>{
         if(search.value !=""){
           fetch(`https://api.ocs.fr/apps/v2/contents?search=title=${search.value}`)
             .then(response =>response.json())
@@ -25,11 +24,11 @@ export default {
             })
           
         }
-        }
-        return {
+      }
+      return {
         search,
         SearchMovies
-        }
+      }
     }
 }
 </script>
