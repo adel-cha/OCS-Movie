@@ -16,7 +16,7 @@
                 v-if="showPlayer"
                 :license-server="licenseServer"
                 :manifest-url="manifestUrl"
-                :poster-url="posterUrl"
+                :poster-url="'https://statics.ocs.fr'+movie.fullscreenimageurl"
             />
         </div>
          <div class="description-item" >
@@ -37,9 +37,7 @@ export default {
             showPlayer:false,
             licenseServer: 'https://widevine-proxy.appspot.com/proxy',
             manifestUrl:
-                'https://dash.akamaized.net/dash264/TestCases/1c/qualcomm/2/MultiRate.mpd',
-            posterUrl:
-                'https://upload.wikimedia.org/wikipedia/commons/a/a7/Big_Buck_Bunny_thumbnail_vlc.png'
+                'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
         }
     },
     methods:{

@@ -7,22 +7,24 @@
 
 <script>
 import {ref} from 'vue';
+import {getSearchMovies} from '@/api'
 export default {
     props:["setMovies","scrollTo"],
     setup(props){
       const search= ref("");
-      const SearchMovies =()=>{
+      const SearchMovies =async()=>{
         if(search.value !=""){
-          fetch(`https://api.ocs.fr/apps/v2/contents?search=title=${search.value}`)
-            .then(response =>response.json())
-            .then(data=>{
-               props.setMovies(data.contents);
-                search.value= "";
-                  setTimeout(()=>{
-                    window.scrollTo(50, 400);
-                },1000)
-            })
-          
+          try{
+            const data = await getSearchMovies(search.value);  
+            props.setMovies(data.contents);
+            search.value= "";
+            setTimeout(()=>{
+              window.scrollTo(50, 400);
+            },1000)
+          }catch(err){
+            console.log(err);
+            return false
+          }
         }
       }
       return {
