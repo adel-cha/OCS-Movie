@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="SearchMovies()" class="search-box">
-      <input type="text" placeholder="Que voulez-vous regarder ?" v-model="search">
+      <input type="search" placeholder="Que voulez-vous regarder ?" v-model="search">
       <input type="submit" value="Rechercher">
     </form>
 </template>
@@ -47,7 +47,7 @@ export default {
         border:none;
         outline:none;
         background:none;
-        &[type="text"]{
+        &[type="search"]{
             flex: 1 1 80%;
           max-width:79%;
           margin-right: 1%;

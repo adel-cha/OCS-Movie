@@ -25,15 +25,6 @@ const router = createRouter({
         }
     ]
   })
-const mockRoute = {
-    params: {
-      type: "programme",
-      id:"ZACKSNYDERSW0176303"
-    }
-  }
-  const mockRouter = {
-    push: jest.fn()
-  }
 jest.mock("@/api",()=>({getMovieDetails:jest.fn()}))
 
 describe('MovieDetail',()=>{

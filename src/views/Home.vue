@@ -5,7 +5,7 @@
     </div>
     
     <MovieSlide />
-    <div class="movies-list" ref="moviesBloc">  
+    <div class="movies-list" ref="moviesBloc" v-if="movies.length>0">  
       <MovieItem  v-for="movie in movies" :key="movie.id" :movie="movie" />
     </div>
   </div>
